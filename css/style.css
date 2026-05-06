@@ -1,0 +1,513 @@
+/* =============================================
+   KICK START STADIUMS - Feuille de style principale
+   Auteur : Votre nom
+   Version : 1.0
+   ============================================= */
+
+/* ---------- Variables de couleurs ---------- */
+:root {
+    --bleu-principal: #1a8fdc;
+    --jaune-accent: #d4f542;
+    --bleu-fonce: #0d6aaa;
+    --texte-sombre: #1a1a2e;
+    --blanc: #ffffff;
+    --gris-clair: #f5f5f5;
+}
+
+/* ---------- Styles globaux ---------- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Barlow', sans-serif;
+    color: var(--texte-sombre);
+    overflow-x: hidden;
+}
+
+/* ---------- Navbar ---------- */
+.navbar {
+    background-color: var(--bleu-principal);
+    padding: 12px 0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+}
+
+.navbar-brand {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: 1.6rem;
+    color: var(--jaune-accent) !important;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.navbar-nav .nav-link {
+    color: var(--blanc) !important;
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin: 0 6px;
+    transition: color 0.2s ease;
+}
+
+.navbar-nav .nav-link:hover,
+.navbar-nav .nav-link.active {
+    color: var(--jaune-accent) !important;
+}
+
+.navbar-toggler {
+    border-color: var(--jaune-accent);
+}
+
+.navbar-toggler-icon {
+    filter: invert(1);
+}
+
+/* ---------- Boutons ---------- */
+.btn-jaune {
+    background-color: var(--jaune-accent);
+    color: var(--texte-sombre);
+    font-weight: 700;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    border: none;
+    padding: 12px 28px;
+    border-radius: 4px;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+
+.btn-jaune:hover {
+    background-color: #c0e030;
+    color: var(--texte-sombre);
+    transform: translateY(-1px);
+}
+
+.btn-bleu {
+    background-color: var(--bleu-principal);
+    color: var(--blanc);
+    font-weight: 700;
+    text-transform: uppercase;
+    border: none;
+    padding: 12px 28px;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+}
+
+.btn-bleu:hover {
+    background-color: var(--bleu-fonce);
+    color: var(--blanc);
+}
+
+/* ---------- Section Hero (bannière bleue) ---------- */
+.section-hero {
+    background-color: var(--bleu-principal);
+    padding: 50px 0 40px 0;
+    text-align: center;
+}
+
+.section-hero h1 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: clamp(2.5rem, 6vw, 5rem);
+    color: var(--jaune-accent);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    line-height: 1.1;
+}
+
+/* ---------- Section jaune (fond clair) ---------- */
+.bg-jaune {
+    background-color: var(--jaune-accent);
+}
+
+.bg-jaune-clair {
+    background-color: #eef9a8;
+}
+
+/* ---------- Cards "Purpose / Approach / Community" ---------- */
+.card-info {
+    background-color: var(--jaune-accent);
+    border: none;
+    border-radius: 0;
+    height: 100%;
+}
+
+.card-info .card-img-top {
+    border-radius: 0;
+    height: 260px;
+    object-fit: cover;
+}
+
+.card-info .card-body {
+    padding: 20px;
+}
+
+.card-info .card-title {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: 1.5rem;
+    color: var(--bleu-principal);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+}
+
+.card-info .card-text {
+    font-size: 0.95rem;
+    color: var(--texte-sombre);
+    line-height: 1.6;
+}
+
+/* ---------- Tableau Calendar ---------- */
+.table-calendar {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.table-calendar thead th {
+    background-color: var(--bleu-principal);
+    color: var(--jaune-accent);
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 800;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding: 14px 16px;
+    text-align: center;
+    border: none;
+}
+
+.table-calendar tbody td {
+    padding: 14px 16px;
+    text-align: center;
+    vertical-align: middle;
+    border: 1px solid #c5e835;
+    font-size: 0.95rem;
+    background-color: #eef9a8;
+}
+
+.table-calendar tbody td:first-child {
+    font-weight: 600;
+    background-color: #e8f4a0;
+    text-align: left;
+}
+
+/* ---------- Section Calendar hero ---------- */
+.calendar-hero-img {
+    width: 100%;
+    height: 320px;
+    object-fit: cover;
+    display: block;
+}
+
+.calendar-intro {
+    background-color: #eef9a8;
+    padding: 40px 30px;
+}
+
+.calendar-intro h1 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: clamp(3rem, 8vw, 6rem);
+    color: var(--bleu-principal);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    line-height: 1;
+    margin-bottom: 16px;
+}
+
+.calendar-intro p {
+    font-size: 1.1rem;
+    color: var(--texte-sombre);
+    max-width: 400px;
+}
+
+/* ---------- Page Registration ---------- */
+.registration-hero {
+    background-color: var(--bleu-principal);
+    padding: 30px 30px 50px 30px;
+}
+
+.registration-hero h1 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: clamp(2.5rem, 5vw, 4.5rem);
+    color: var(--jaune-accent);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    line-height: 1;
+}
+
+.registration-hero-img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    display: block;
+}
+
+.form-section {
+    background-color: var(--blanc);
+    padding: 40px 30px;
+}
+
+.form-section label {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--texte-sombre);
+    margin-bottom: 6px;
+}
+
+.form-section .form-control,
+.form-section .form-select {
+    border: 1.5px solid #ccc;
+    border-radius: 4px;
+    padding: 10px 14px;
+    font-size: 0.95rem;
+    transition: border-color 0.2s ease;
+}
+
+.form-section .form-control:focus,
+.form-section .form-select:focus {
+    border-color: var(--bleu-principal);
+    box-shadow: 0 0 0 3px rgba(26,143,220,0.15);
+}
+
+.age-option {
+    display: block;
+    width: 100%;
+    padding: 10px 14px;
+    margin-bottom: 8px;
+    border: 1.5px solid #ccc;
+    border-radius: 4px;
+    background-color: var(--blanc);
+    cursor: pointer;
+    font-size: 0.95rem;
+    transition: border-color 0.2s ease, background-color 0.2s ease;
+}
+
+.age-option:hover {
+    border-color: var(--bleu-principal);
+    background-color: #e8f4ff;
+}
+
+.age-option input[type="radio"] {
+    margin-right: 10px;
+    accent-color: var(--bleu-principal);
+}
+
+.form-note {
+    font-size: 0.78rem;
+    color: #888;
+    text-align: center;
+    margin-top: 8px;
+}
+
+/* ---------- Page FAQs ---------- */
+.faqs-hero {
+    background-color: var(--bleu-principal);
+    padding: 50px 30px;
+    position: relative;
+    min-height: 380px;
+    display: flex;
+    align-items: flex-start;
+}
+
+.faqs-hero h1 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: clamp(3rem, 8vw, 6rem);
+    color: var(--jaune-accent);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    line-height: 1;
+    max-width: 55%;
+}
+
+.faqs-hero p {
+    color: var(--blanc);
+    font-size: 1.05rem;
+    margin-top: 16px;
+}
+
+.faqs-hero-img {
+    position: absolute;
+    right: 0;
+    top: 0;
+    height: 100%;
+    width: 45%;
+    object-fit: cover;
+}
+
+.faq-card {
+    background-color: var(--bleu-principal);
+    color: var(--blanc);
+    padding: 24px;
+    border-radius: 0;
+    height: 100%;
+}
+
+.faq-card.bg-jaune-card {
+    background-color: var(--jaune-accent);
+    color: var(--texte-sombre);
+}
+
+.faq-card .faq-num {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: 2.5rem;
+    line-height: 1;
+    margin-bottom: 12px;
+}
+
+.faq-card .faq-question {
+    font-weight: 700;
+    font-size: 1rem;
+    margin-bottom: 8px;
+}
+
+.faq-card .faq-answer {
+    font-size: 0.92rem;
+    line-height: 1.6;
+}
+
+.faqs-section {
+    background-color: var(--jaune-accent);
+    padding: 40px 0;
+}
+
+/* ---------- Page Contact ---------- */
+.contact-top {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.contact-top-left {
+    background-color: var(--jaune-accent);
+    padding: 50px 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.contact-top-left h1 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: clamp(2rem, 5vw, 4rem);
+    color: var(--bleu-principal);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    line-height: 1.05;
+    margin-bottom: 20px;
+}
+
+.contact-top-left p {
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: var(--texte-sombre);
+}
+
+.contact-top-right img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.contact-banner-img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    display: block;
+}
+
+/* ---------- Footer ---------- */
+.footer {
+    background-color: var(--bleu-principal);
+    padding: 40px 0 24px 0;
+}
+
+.footer h2 {
+    font-family: 'Barlow Condensed', sans-serif;
+    font-weight: 900;
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    color: var(--jaune-accent);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-bottom: 30px;
+}
+
+.footer-info {
+    color: var(--blanc);
+    font-size: 0.9rem;
+    line-height: 1.8;
+}
+
+.footer-info a {
+    color: var(--blanc);
+    text-decoration: none;
+}
+
+.footer-info a:hover {
+    color: var(--jaune-accent);
+}
+
+.footer-socials a {
+    color: var(--blanc);
+    font-size: 1.8rem;
+    margin-left: 14px;
+    transition: color 0.2s ease;
+    text-decoration: none;
+}
+
+.footer-socials a:hover {
+    color: var(--jaune-accent);
+}
+
+.footer-bottom {
+    border-top: 1px solid rgba(255,255,255,0.2);
+    margin-top: 24px;
+    padding-top: 16px;
+    color: rgba(255,255,255,0.6);
+    font-size: 0.8rem;
+    text-align: center;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 768px) {
+    .contact-top {
+        grid-template-columns: 1fr;
+    }
+
+    .contact-top-right {
+        height: 260px;
+    }
+
+    .faqs-hero-img {
+        display: none;
+    }
+
+    .faqs-hero h1 {
+        max-width: 100%;
+    }
+
+    .registration-hero {
+        text-align: center;
+    }
+}
+
+@media (max-width: 576px) {
+    .section-hero {
+        padding: 30px 16px 24px 16px;
+    }
+
+    .calendar-intro {
+        padding: 24px 16px;
+    }
+}
