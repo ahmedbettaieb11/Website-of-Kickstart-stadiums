@@ -1,0 +1,52 @@
+CREATE TABLE inscriptions (
+    id          INT AUTO_INCREMENT PRIMARY KEY,
+    nom         VARCHAR(100) NOT NULL,
+    email       VARCHAR(150) NOT NULL,
+    telephone   VARCHAR(20)  NOT NULL,
+    groupe_age  VARCHAR(20)  NOT NULL,
+    session     VARCHAR(50),
+    commentaire TEXT,
+    date_inscription DATETIME DEFAULT NOW()
+);
+
+-- Table des sessions/créneaux
+CREATE TABLE sessions (
+    id          INT AUTO_INCREMENT PRIMARY KEY,
+    date_debut  DATETIME NOT NULL,
+    date_fin    DATETIME NOT NULL,
+    groupe_age  VARCHAR(30),
+    prix        DECIMAL(8,2),
+    notes       VARCHAR(200),
+    places_max  INT DEFAULT 20,
+    actif       TINYINT DEFAULT 1
+);
+
+-- Table des messages de contact
+CREATE TABLE messages_contact (
+    id      INT AUTO_INCREMENT PRIMARY KEY,
+    nom     VARCHAR(100),
+    email   VARCHAR(150),
+    sujet   VARCHAR(100),
+    message TEXT,
+    date_envoi DATETIME DEFAULT NOW(),
+    lu      TINYINT DEFAULT 0
+);
+```
+/////script insertion/////
+-- 1. Insertion de quelques sessions (calendrier)
+INSERT INTO sessions (date_debut, date_fin, groupe_age, prix, notes, places_max, actif) VALUES
+('2026-06-15 09:00:00', '2026-06-15 11:00:00', 'Juniors (6-9)', 25.00, 'Techniques de dribble de base', 15, 1),
+('2026-06-15 14:00:00', '2026-06-15 16:00:00', 'Teens (10-14)', 30.00, 'Perfectionnement du tir et puissance', 20, 1),
+('2026-06-17 10:00:00', '2026-06-17 12:00:00', 'All Ages', 20.00, 'Match amical et tournoi de fin de session', 30, 1),
+('2026-06-20 09:30:00', '2026-06-20 11:30:00', 'Juniors (6-9)', 25.00, 'Contrôle du ballon et passes courtes', 15, 1);
+
+-- 2. Insertion de quelques inscriptions fictives
+INSERT INTO inscriptions (nom, email, telephone, groupe_age, session, commentaire) VALUES
+('Jean Dupont', 'j.dupont@email.com', '0601020304', 'Juniors (6-9)', 'Session du 15 Juin', 'Mon fils est débutant mais très motivé !'),
+('Sarah Martin', 'sarah.m@test.fr', '0712345678', 'Teens (10-14)', 'Session du 15 Juin', 'Prévoir un maillot taille M svp.'),
+('Marc Lefebvre', 'm.lefe@gmail.com', '0688990011', 'Juniors (6-9)', 'Session du 20 Juin', NULL);
+
+-- 3. Insertion de messages de contact
+INSERT INTO messages_contact (nom, email, sujet, message, lu) VALUES
+('Lucas Bernard', 'l.bernard@outlook.fr', 'Question sur l équipement', 'Bonjour, est-ce que les protège-tibias sont fournis ou faut-il les acheter ?', 0),
+('Julie Durand', 'j.durand@bureau.com', 'Partenariat', 'Nous souhaitons sponsoriser vos prochains tournois, qui peut-on contacter ?', 1);
