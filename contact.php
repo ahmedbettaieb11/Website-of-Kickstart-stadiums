@@ -1,9 +1,4 @@
 <?php
-/*
- * Fichier : contact.php
- * Page : Contact — Formulaire avec enregistrement en BDD
- */
-
 $titre_page = 'Contact — Kick Start Stadiums';
 
 include 'includes/connexion.php';
@@ -11,54 +6,42 @@ include 'includes/connexion.php';
 $message_envoye = false;
 $erreur_contact = '';
 
-// -------------------------------------------------------
-// Traitement du formulaire de contact
-// -------------------------------------------------------
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
-    $nom     = trim($_POST['nom_contact'] ?? '');
-    $email   = trim($_POST['email_contact'] ?? '');
-    $sujet   = trim($_POST['sujet'] ?? '');
-    $message = trim($_POST['message'] ?? '');
+    $nom     = trim($_POST['nom_contact']);
+    $email   = trim($_POST['email_contact']);
+    $sujet   = trim($_POST['sujet']) ?: 'Sans sujet'; // Shortened syntax
+    $message = trim($_POST['message']);
 
     if (empty($nom) || empty($email) || empty($message)) {
         $erreur_contact = "Veuillez remplir tous les champs obligatoires.";
-
     } elseif (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
         $erreur_contact = "L'adresse email n'est pas valide.";
-
     } else {
-        try {
-            $stmt = $pdo->prepare("
-                INSERT INTO messages_contact (nom, email, sujet, message)
-                VALUES (:nom, :email, :sujet, :message)
-            ");
+        // 1. Prepare the template
+        $stmt = mysqli_prepare($conn, "INSERT INTO messages_contact (nom, email, sujet, message) VALUES (?, ?, ?, ?)");
+        
+        // 2. Bind the variables (s = string)
+        mysqli_stmt_bind_param($stmt, "ssss", $nom, $email, $sujet, $message);
 
-            $stmt->execute([
-                ':nom'     => $nom,
-                ':email'   => $email,
-                ':sujet'   => $sujet ?: 'Sans sujet',
-                ':message' => $message,
-            ]);
-
+        // 3. Execute
+        if (mysqli_stmt_execute($stmt)) {
             $message_envoye = true;
-
-        } catch (PDOException $e) {
-            $erreur_contact = "Une erreur est survenue. Réessayez ou contactez-nous directement par téléphone.";
+        } else {
+            $erreur_contact = "Une erreur est survenue lors de l'envoi.";
         }
+        
+        mysqli_stmt_close($stmt);
     }
 }
-
 include 'includes/head.php';
 ?>
 
 <?php include 'includes/navbar.php'; ?>
 
-<!-- ===================== SECTION CONTACT HAUT ===================== -->
 <section>
     <div style="display: grid; grid-template-columns: 1fr 1fr;">
 
-        <!-- Partie gauche : fond jaune + texte -->
         <div style="background-color: var(--jaune-accent); padding: 50px 40px;
                     display: flex; flex-direction: column; justify-content: space-between;
                     min-height: 380px;">
@@ -79,26 +62,21 @@ include 'includes/head.php';
             </div>
         </div>
 
-        <!-- Partie droite : image joueuse -->
         <div style="height: 380px; overflow: hidden;">
             <img src="images/image5.png"
                  alt="Joueuse avec ballon"
-                 style="width: 100%; height: 100%;
-                        object-fit: cover; object-position: top; display: block;">
+                 style="width: 100%; height: 100%; object-fit: cover; object-position: top; display: block;">
         </div>
 
     </div>
 </section>
 
-<!-- ===================== IMAGE BANNIÈRE BAS ===================== -->
 <div style="overflow: hidden; height: 280px;">
     <img src="images/image8.png"
          alt="Ballon sur le terrain"
-         style="width: 100%; height: 100%;
-                object-fit: cover; object-position: top; display: block;">
+         style="width: 100%; height: 100%; object-fit: cover; object-position: top; display: block;">
 </div>
 
-<!-- ===================== FORMULAIRE DE CONTACT ===================== -->
 <section style="background-color: var(--gris-clair); padding: 60px 0;">
     <div class="container">
         <div class="row justify-content-center">
@@ -117,46 +95,42 @@ include 'includes/head.php';
                 <?php endif; ?>
 
                 <?php if ($erreur_contact): ?>
-                    <div class="alert alert-danger mb-4">
-                        <?= htmlspecialchars($erreur_contact) ?>
-                    </div>
+                    <div class="alert alert-danger mb-4"><?= $erreur_contact ?></div>
                 <?php endif; ?>
 
-                <form action="contact.php" method="post" novalidate class="form-section" style="padding: 0;">
+                <form action="contact.php" method="post" class="form-section" style="padding: 0;">
 
                     <div class="row g-3 mb-3">
                         <div class="col-md-6">
-                            <label for="nom_contact" class="form-label">Votre nom</label>
-                            <input type="text" class="form-control" id="nom_contact"
-                                   name="nom_contact"
-                                   value="<?= htmlspecialchars($_POST['nom_contact'] ?? '') ?>"
-                                   placeholder="Ahmed Ben Ali" required>
+                            <label class="form-label">Votre nom</label>
+                            <input type="text" class="form-control" name="nom_contact"
+                                   value="<?= $_POST['nom_contact'] ?? '' ?>"
+                                   placeholder="Ahmed Ben Ali">
                         </div>
                         <div class="col-md-6">
-                            <label for="email_contact" class="form-label">Votre email</label>
-                            <input type="email" class="form-control" id="email_contact"
-                                   name="email_contact"
-                                   value="<?= htmlspecialchars($_POST['email_contact'] ?? '') ?>"
-                                   placeholder="exemple@email.com" required>
+                            <label class="form-label">Votre email</label>
+                            <input type="email" class="form-control" name="email_contact"
+                                   value="<?= $_POST['email_contact'] ?? '' ?>"
+                                   placeholder="exemple@email.com">
                         </div>
                     </div>
 
                     <div class="mb-3">
-                        <label for="sujet" class="form-label">Sujet</label>
-                        <select class="form-select" id="sujet" name="sujet">
+                        <label class="form-label">Sujet</label>
+                        <select class="form-select" name="sujet">
                             <option value="">-- Choisir un sujet --</option>
-                            <option value="reservation"   <?= (($_POST['sujet'] ?? '') === 'reservation')   ? 'selected' : '' ?>>Réservation de terrain</option>
-                            <option value="inscription"   <?= (($_POST['sujet'] ?? '') === 'inscription')   ? 'selected' : '' ?>>Inscription aux entraînements</option>
-                            <option value="tarifs"        <?= (($_POST['sujet'] ?? '') === 'tarifs')        ? 'selected' : '' ?>>Informations sur les tarifs</option>
-                            <option value="partenariat"   <?= (($_POST['sujet'] ?? '') === 'partenariat')   ? 'selected' : '' ?>>Partenariat</option>
-                            <option value="autre"         <?= (($_POST['sujet'] ?? '') === 'autre')         ? 'selected' : '' ?>>Autre</option>
+                            <option value="reservation"  <?= (($_POST['sujet'] ?? '') == 'reservation')  ? 'selected' : '' ?>>Réservation de terrain</option>
+                            <option value="inscription"  <?= (($_POST['sujet'] ?? '') == 'inscription')  ? 'selected' : '' ?>>Inscription aux entraînements</option>
+                            <option value="tarifs"       <?= (($_POST['sujet'] ?? '') == 'tarifs')       ? 'selected' : '' ?>>Informations sur les tarifs</option>
+                            <option value="partenariat"  <?= (($_POST['sujet'] ?? '') == 'partenariat')  ? 'selected' : '' ?>>Partenariat</option>
+                            <option value="autre"        <?= (($_POST['sujet'] ?? '') == 'autre')        ? 'selected' : '' ?>>Autre</option>
                         </select>
                     </div>
 
                     <div class="mb-4">
-                        <label for="message" class="form-label">Votre message</label>
-                        <textarea class="form-control" id="message" name="message"
-                                  rows="5" placeholder="Décrivez votre demande…" required><?= htmlspecialchars($_POST['message'] ?? '') ?></textarea>
+                        <label class="form-label">Votre message</label>
+                        <textarea class="form-control" name="message" rows="5"
+                                  placeholder="Décrivez votre demande…"><?= $_POST['message'] ?? '' ?></textarea>
                     </div>
 
                     <button type="submit" class="btn btn-bleu btn-lg w-100">
@@ -165,7 +139,6 @@ include 'includes/head.php';
 
                 </form>
 
-                <!-- Coordonnées directes -->
                 <div class="mt-5 p-4" style="background-color: var(--bleu-principal); border-radius: 8px;">
                     <h3 style="font-family: 'Barlow Condensed', sans-serif; font-weight: 800;
                                color: var(--jaune-accent); font-size: 1.4rem;
