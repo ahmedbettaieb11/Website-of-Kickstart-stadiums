@@ -1,34 +1,19 @@
 <?php
-/*
- * Fichier : calendrier.php
- * Page : Camp Calendar — Sessions chargées depuis la base de données
- */
-
 $titre_page = 'Calendrier — Kick Start Stadiums';
 
-// Connexion à la base de données
 include 'includes/connexion.php';
 
-// Récupération des sessions actives, triées par date
-$requete = $pdo->query("
-    SELECT id, date_debut, date_fin, groupe_age, prix, notes, places_max
-    FROM sessions
-    WHERE actif = 1
-    ORDER BY date_debut ASC
-");
-$sessions = $requete->fetchAll();
+$result = mysqli_query($conn, "SELECT * FROM sessions WHERE actif = 1 ORDER BY date_debut ASC");
 
 include 'includes/head.php';
 ?>
 
 <?php include 'includes/navbar.php'; ?>
 
-<!-- ===================== IMAGE HERO ===================== -->
 <img src="images/image4.png"
      alt="Joueurs sur le terrain"
      style="width: 100%; height: 320px; object-fit: cover; object-position: center; display: block;">
 
-<!-- ===================== TITRE ===================== -->
 <section class="calendar-intro">
     <div class="container">
         <h1>Camp Calendar</h1>
@@ -36,11 +21,10 @@ include 'includes/head.php';
     </div>
 </section>
 
-<!-- ===================== TABLEAU DES SESSIONS ===================== -->
 <section style="background-color: #eef9a8; padding: 20px 0 60px 0;">
     <div class="container">
 
-        <?php if (empty($sessions)): ?>
+        <?php if (mysqli_num_rows($result) == 0): ?>
             <div class="alert alert-info text-center mt-4">
                 Aucune session disponible pour le moment. Revenez bientôt !
             </div>
@@ -60,27 +44,21 @@ include 'includes/head.php';
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach ($sessions as $session): ?>
-                            <?php
-                                $date        = date('d/m/Y', strtotime($session['date_debut']));
-                                $heure_debut = date('H\hi', strtotime($session['date_debut']));
-                                $heure_fin   = date('H\hi', strtotime($session['date_fin']));
-                            ?>
+                        <?php while ($session = mysqli_fetch_assoc($result)): ?>
                             <tr>
-                                <td><?= htmlspecialchars($date) ?></td>
-                                <td><?= $heure_debut ?> → <?= $heure_fin ?></td>
-                                <td><?= htmlspecialchars($session['groupe_age']) ?></td>
+                                <td><?= date('d/m/Y', strtotime($session['date_debut'])) ?></td>
+                                <td><?= date('H\hi', strtotime($session['date_debut'])) ?> → <?= date('H\hi', strtotime($session['date_fin'])) ?></td>
+                                <td><?= $session['groupe_age'] ?></td>
                                 <td><?= number_format($session['prix'], 2) ?> $</td>
-                                <td><?= htmlspecialchars($session['places_max']) ?> places</td>
-                                <td><?= htmlspecialchars($session['notes']) ?></td>
+                                <td><?= $session['places_max'] ?> places</td>
+                                <td><?= $session['notes'] ?></td>
                                 <td>
-                                    <a href="inscription.php?session_id=<?= $session['id'] ?>"
-                                       class="btn btn-bleu btn-sm">
+                                    <a href="inscription.php?session_id=<?= $session['id'] ?>" class="btn btn-bleu btn-sm">
                                         S'inscrire
                                     </a>
                                 </td>
                             </tr>
-                        <?php endforeach; ?>
+                        <?php endwhile; ?>
                     </tbody>
                 </table>
             </div>
